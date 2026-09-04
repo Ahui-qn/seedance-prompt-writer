@@ -27,6 +27,16 @@ Composition and camera remain explicit at every level. A concise composition can
 
 The minimum prompt skeleton is always: per-image authority, overall visual and continuity requirements, shot numbering, composition and camera, main action and emotion, per-shot sound, and a compact timeline.
 
+## Allocate detail by shot duration
+
+Allocate each shot's prompt length roughly in proportion to its screen time, adjusted for the user's chosen control level and the shot's narrative importance. Short shots get compact instructions; longer shots get more room for action progression, acting, physical feedback, and timing. Treat this as a user-reported production heuristic, not a verified claim about Seedance's internal attention mechanism.
+
+- For a short arrival, transition, or hold, state composition, camera, essential action, end state, continuity, and synchronized sound concisely.
+- For a longer or primary shot, spend the detail budget on the intended performance and motion progression. Do not pad static holds merely to match a word-count ratio.
+- Keep critical constraints explicit even in a very short shot, especially impact timing, precise camera moves, reference-image authority, and required final poses.
+- Put shared appearance, weather, and material continuity in global sections; repeat within shots only where the action changes them or a critical visual cue requires reinforcement.
+- Check the relative length of shot sections before delivery: a brief supporting shot should not receive the same exhaustive treatment as a longer main shot without a specific reason.
+
 ## Build the prompt
 
 1. Read the images in the user's supplied order and call them 图1、图2、图3…… unless the user assigns other labels.
