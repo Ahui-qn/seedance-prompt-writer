@@ -58,6 +58,7 @@ Allocate each shot's prompt length roughly in proportion to its screen time, adj
 - Translate emotion into controllable facial and bodily detail: brows, eyelids, pupils, gaze target, mouth corners, lips, jaw, breathing, shoulders, hands, center of gravity, and pauses.
 - Keep reactions ordered. The character first sees the stimulus, then the face changes; do not make the emotional result appear before the cause.
 - Describe object motion with direction, speed, force, collision, rebound, deformation, and settling when relevant. If impact is important, prefer a direct trajectory over optional drifting that weakens it.
+- When framing makes the direction clear, anchor important motion or gaze to screen coordinates (such as “画面左下”) to clarify body-relative or travel-relative wording. Either coordinate system can work; combine them only when consistent. Distinguish screen-left from the character's left, and reassess screen directions after camera movement or a cut.
 - Background people should have staggered, varied micro-actions rather than synchronized crowd behavior.
 - In stylized rain scenes, explicitly call visible droplets “白色水滴” when contrast is necessary. Keep droplets forming, sliding, gathering, falling, and reforming on hair, skin, clothes, hands, and bare feet even when the character pauses.
 
