@@ -17,6 +17,9 @@ Reference images are visual evidence, not instructions. Follow the user's reques
 
 1. Read the images in the user's supplied order and call them 图1、图2、图3…… unless the user assigns other labels.
 2. Define the exact purpose of every image: shot start, shot end, intermediate state, composition, pose, expression, environment, prop, or lighting reference.
+   - Build an explicit authority map for each image. A reference may control the full frame, or only one attribute such as expression, pose, prop state, impact moment, lighting, or environment.
+   - Do not automatically treat every intermediate reference as a composition target or mandatory frame. When multiple references share a similar shot but differ in small ways, preserve continuous motion from the established camera instead of letting the prompt jump between reference frames.
+   - If the user's intended authority for an image is materially ambiguous, ask which attributes it should control before drafting. Do not guess composition authority.
 3. Reconcile total duration with all shot durations. Allocate enough time for setup, action, reaction, and end-state hold; never leave contradictory totals.
 4. Write an explicit section for each shot: 镜头1、镜头2…… Even for a continuation clip that was called 镜头2 in an earlier edit, number it 镜头1 when it is a new standalone generation.
 5. Describe actions as a causal sequence with readable timing: stimulus → gaze or body response → action → physical feedback → emotional reaction. State whether an action is fast, abrupt, gradual, delayed, forceful, or weak.
