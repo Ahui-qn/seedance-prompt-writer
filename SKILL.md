@@ -67,7 +67,7 @@ Allocate each shot's prompt length roughly in proportion to its screen time, adj
 
 - Default to editing only the affected shot content for local action, expression, pacing, or camera revisions. Preserve reference definitions and global appearance, style, continuity, emotion, and sound sections unless the change actually affects them. Update linked shot sound or timeline entries only when needed for consistency, and explain any necessary cross-section change briefly. A request for a full copy changes delivery scope, not permission to rewrite unaffected text.
 - Apply the user's latest instruction directly. Remove superseded actions and wording instead of adding phrases such as “不要旧动作、改做新动作”.
-- If the user asks for replacement snippets, return only clearly paired original and replacement text.
+- For every localized addition, deletion, or replacement, provide an exact, searchable original excerpt and its revised counterpart. For additions, include an unchanged nearby anchor in both excerpts; for deletions, show the exact text to remove and label the deletion clearly. Never give only a vague location or an unanchored new paragraph. Copy originals verbatim from the latest available user text, without ellipses or paraphrase; request the current excerpt if it is unavailable.
 - If the user asks for a full revision or says they do not want to replace fragments, return a clean complete prompt.
 - Do not preserve obsolete plot beats merely because they appeared in an earlier draft.
 - Check for duplicated words, mojibake, contradictory positives and negatives, wrong shot numbering, missing image roles, and duration errors before delivery.
