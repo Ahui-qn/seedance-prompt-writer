@@ -60,6 +60,7 @@ Allocate each shot's prompt length roughly in proportion to its screen time, adj
 - Describe object motion with direction, speed, force, collision, rebound, deformation, and settling when relevant. If impact is important, prefer a direct trajectory over optional drifting that weakens it.
 - When framing makes the direction clear, anchor important motion or gaze to screen coordinates (such as “画面左下”) to clarify body-relative or travel-relative wording. Either coordinate system can work; combine them only when consistent. Distinguish screen-left from the character's left, and reassess screen directions after camera movement or a cut.
 - Background people should have staggered, varied micro-actions rather than synchronized crowd behavior.
+- In moving-camera shots, distinguish world-anchored foreground objects from camera-mounted elements. Specify depth-driven parallax and frame exit when the camera passes stationary people or props. For changing light patches or glare, tie visible motion to foliage, occlusion, or viewpoint changes rather than treating the effect as a screen-fixed overlay or inventing an independently moving light source.
 - In stylized rain scenes, explicitly call visible droplets “白色水滴” when contrast is necessary. Keep droplets forming, sliding, gathering, falling, and reforming on hair, skin, clothes, hands, and bare feet even when the character pauses.
 
 ## Revision rules
