@@ -34,6 +34,7 @@ Allocate each shot's prompt length roughly in proportion to its screen time, adj
 - For a short arrival, transition, or hold, state composition, camera, essential action, end state, continuity, and synchronized sound concisely.
 - For a longer or primary shot, spend the detail budget on the intended performance and motion progression. Do not pad static holds merely to match a word-count ratio.
 - Keep critical constraints explicit even in a very short shot, especially impact timing, precise camera moves, reference-image authority, and required final poses.
+- In brief shots built around one key action, keep the setup minimal and concentrate detail on that action. Omit optional weaker versions, intermediate pose grades, or secondary beats that compete with the intended result; describe a continuous transition into the key action without inventing a ladder of small changes. Preserve intermediate states only when the user explicitly needs them.
 - Put shared appearance, weather, and material continuity in global sections; repeat within shots only where the action changes them or a critical visual cue requires reinforcement.
 - Check the relative length of shot sections before delivery: a brief supporting shot should not receive the same exhaustive treatment as a longer main shot without a specific reason.
 
