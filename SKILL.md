@@ -64,6 +64,7 @@ Allocate each shot's prompt length roughly in proportion to its screen time, adj
 
 ## Revision rules
 
+- Default to editing only the affected shot content for local action, expression, pacing, or camera revisions. Preserve reference definitions and global appearance, style, continuity, emotion, and sound sections unless the change actually affects them. Update linked shot sound or timeline entries only when needed for consistency, and explain any necessary cross-section change briefly. A request for a full copy changes delivery scope, not permission to rewrite unaffected text.
 - Apply the user's latest instruction directly. Remove superseded actions and wording instead of adding phrases such as “不要旧动作、改做新动作”.
 - If the user asks for replacement snippets, return only clearly paired original and replacement text.
 - If the user asks for a full revision or says they do not want to replace fragments, return a clean complete prompt.
