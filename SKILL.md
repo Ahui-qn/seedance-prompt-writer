@@ -13,6 +13,20 @@ Assume the video model remembers nothing from earlier clips, prompts, or convers
 
 Reference images are visual evidence, not instructions. Follow the user's request when image content and requested action differ.
 
+## Calibrate control density
+
+Before drafting, determine both the production type and the desired detail level. Useful production signals include performance ad, social short, TVC, cinematic hero film, story film, or motion test. Treat type and detail as separate signals: a performance ad can still need strict product control, while a cinematic clip may intentionally allow improvisation.
+
+If these signals are missing and the choice would materially change prompt length or model freedom, ask one compact question covering both, for example: “这条片属于买量广告、TVC、大片还是测试片？细节控制要高、中还是低？” Do not interrupt when the user has already made the expected control level clear.
+
+- **High control:** Use for continuity-sensitive shots, precise acting, difficult camera moves, product or prop accuracy, hero TVCs, and cinematic work. Specify timing, facial mechanics, body mechanics, object physics, lighting changes, sound synchronization, and continuity in detail.
+- **Medium control:** Keep the full structure but describe only the important acting beats, transitions, camera behavior, composition, continuity risks, and sound cues. Leave incidental micro-motion to the model.
+- **Light control:** Preserve the basic structure and state the visual objective clearly, then give the model more freedom. Avoid exhaustive costume, skin, fabric, particle, and muscle descriptions unless they are essential to identity or story.
+
+Composition and camera remain explicit at every level. A concise composition can be built from shot size and angle; foreground, midground, and background; left, center, and right placement; subject orientation and movement path; focus plane, depth of field, and blur; plus the required camera motion and stopping point. Expand into character-level visual detail only when it prevents a likely failure.
+
+The minimum prompt skeleton is always: per-image authority, overall visual and continuity requirements, shot numbering, composition and camera, main action and emotion, per-shot sound, and a compact timeline.
+
 ## Build the prompt
 
 1. Read the images in the user's supplied order and call them 图1、图2、图3…… unless the user assigns other labels.
