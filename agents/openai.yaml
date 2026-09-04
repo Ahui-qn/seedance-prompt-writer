@@ -1,0 +1,4 @@
+interface:
+  display_name: "Seedance 提示词编剧"
+  short_description: "按参考图编写细致、可复制的 Seedance 视频提示词"
+  default_prompt: "使用 $seedance-prompt-writer，根据我按顺序提供的参考图和剧情要求，编写完整视频提示词并附简易时间线。"
