@@ -74,7 +74,11 @@ Allocate each shot's prompt length roughly in proportion to its screen time, adj
 
 ## Continuous improvement
 
-When the user gives feedback during repeated prompt work, separate reusable craft guidance from story-specific direction. Add genuinely reusable rules to this skill, such as output structure, continuity handling, timing discipline, camera-language precision, expression causality, object physics, or revision behavior. Keep one-off character actions, client notes, plot facts, exact durations, and project-only art direction in the current prompt rather than turning them into global rules. Update the shareable source skill and keep any installed copy aligned.
+Apply continuous improvement across projects, not only within the project where this skill was created. During an active prompt-writing or revision turn, when the user gives feedback that demonstrates a genuinely reusable method, separate it from story-specific direction and add the reusable rule to this skill without requiring a separate reminder. This is an in-turn maintenance workflow, not background learning or silent work after the conversation ends.
+
+Reusable guidance includes output structure, continuity handling, timing discipline, attention allocation, camera-language precision, screen-space direction, expression causality, object physics, or revision behavior. Keep one-off character actions, client notes, plot facts, exact durations, named characters, and project-only art direction in the current prompt rather than turning them into global rules. Do not update the skill merely because a user requests a different creative choice once; prefer feedback that states a general principle or demonstrates a repeated failure pattern.
+
+Skill maintenance is conditional on authorization and writable access. If the user has authorized ongoing maintenance, update the canonical shareable source when it can be identified, keep the installed copy aligned, run the standard validator on both, and synchronize the authorized Git remote. If the canonical source or push authorization is unavailable, update only the writable authorized copy and report what remains unsynchronized. Never let maintenance delay delivery of the requested prompt unnecessarily.
 
 ## Output format
 
