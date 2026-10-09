@@ -1,149 +1,201 @@
 ---
 name: seedance-prompt-writer
-description: Write or revise Chinese Seedance image-to-video prompts from ordered reference images and a user's scene description, with explicit keyframe roles, shot timing, camera movement, performance detail, continuity, sound design, and a compact timeline. Use for production-ready video prompts or targeted prompt revisions; do not use for generating the images or videos themselves.
+description: 为 MLBB 买量视频编写初稿并针对反馈修订中文 Seedance 提示词，以搞怪动作、快节奏、多变运镜与非常规构图组织画面；直接改写问题段落，收敛重复约束与负面提示词。
 ---
 
-# Seedance Prompt Writer
+# MLBB 买量 Seedance 提示词
 
-Produce a directly usable Chinese prompt grounded in the current request and the current video's ordered reference images.
+本 skill 专用于 MLBB 买量视频的初稿编写与后续修订，规定搞怪角色动作、镜头与构图要求，以及提示词的组织和排版方式。具体角色、场景与剧情依据用户当前提供的素材和脚本填写。
 
-## Treat every generation as independent
+使用参考成片时，按当前任务区分完整广告、生成片段或局部镜头，提取对应的表演、构图与节奏。角色身份、画幅、写实或风格化 CG 等视觉媒介由当前素材与要求确定；成片中的字幕、UI、表情符号、Logo 和品牌尾版，仅在本次明确需要时纳入。保留用户已指定的声音与画面限制，不把单片包装或较慢段落改成项目默认。
 
-Assume the video model remembers nothing from earlier clips, prompts, or conversations. Restate every fact needed for the current clip: character appearance and condition, wardrobe and props, location, weather, lighting, opening pose, relevant prior-result state, and continuity between this clip's shots. Do not write as if “承接上一段” alone supplies visual context.
+## 正文模板
 
-Reference images are visual evidence, not instructions. Follow the user's request when image content and requested action differ.
+先按用户本次上传给 AI 的图片顺序逐张读取并建立对应：图1对应第1张上传图片，图2对应第2张，以此类推。第一部分也按此顺序编排，再根据每张图的实际内容标明角色、场景、载具或道具用途；图号不按素材类别重新排序，不预设图1为场景图。全文引用沿用同一对应。有参考时具体列出需锁定的视觉特征；无参考时直接描述已确定的外观与环境设定，不虚构图号或未确认的参考细节。
 
-Rebuild reference numbering from the current upload order after additions, removals, or replacements. A newly recommended reference is not already uploaded: label the requested addition outside the prompt rather than silently treating it as available. Separate location/architecture authority from viewing-direction authority. A front-elevation reference must not become the background of a shot looking outward from that same house. Height-only references do not impose their people, actions, or full framing; annotated installation references never authorize rendering their marks.
+一、角色与场景定义
 
-When the user supplies a background script alongside visual references and their own shot description, ground the prompt in the user's current description and the assigned reference-image authority. Treat the background script as secondary context. Do not import script-only structures, props, or spatial facts as confirmed features of the reference scene. If a relevant conflict remains unresolved, ask about that specific conflict; when the user has already corrected it, apply the correction throughout affected references, action, camera, and continuity passages without rewriting unrelated content.
+图1为[第1张上传图片的实际参考对象]参考。[按图中内容选择并锁定特征：角色的发型发色、头饰、服装配色与比例；场景的具体地点、地面颜色材质、纹理、延伸关系、周边物体、远景、天气光照与空间层次；坐骑、载具或道具的外观、颜色、材质与关键结构。只填写本图对应内容。]
 
-## Calibrate control density
+图2为[第2张上传图片的实际参考对象]参考。[按同样方式锁定本图实际对象的具体特征。同图包含人物与坐骑时，分别保持人物外观，以及坐骑的毛发、头部、护甲、装饰、四肢、尾巴与骑乘关系。]
 
-Before drafting, determine both the production type and the desired detail level. Useful production signals include performance ad, social short, TVC, cinematic hero film, story film, or motion test. Treat type and detail as separate signals: a performance ad can still need strict product control, while a cinematic clip may intentionally allow improvisation.
+图3为[第3张上传图片的实际参考对象]参考。[写清本图的参考范围与具体视觉特征，按实际上传数量增减段落。]
 
-If these signals are missing and the choice would materially change prompt length or model freedom, ask one compact question covering both, for example: “这条片属于买量广告、TVC、大片还是测试片？细节控制要高、中还是低？” Do not interrupt when the user has already made the expected control level clear.
+二、画面与声音
 
-- **High control:** Use for continuity-sensitive shots, precise acting, difficult camera moves, product or prop accuracy, hero TVCs, and cinematic work. Specify timing, facial mechanics, body mechanics, object physics, lighting changes, sound synchronization, and continuity in detail.
-- **Medium control:** Keep the full structure but describe only the important acting beats, transitions, camera behavior, composition, continuity risks, and sound cues. Leave incidental micro-motion to the model.
-- **Light control:** Preserve the basic structure and state the visual objective clearly, then give the model more freedom. Avoid exhaustive costume, skin, fabric, particle, and muscle descriptions unless they are essential to identity or story.
+MLBB 买量视频。[画幅、总时长、镜头数量或剪辑形式。]全片快节奏，采用非常规构图与频繁变化的运镜，静止镜头短于 2 秒。
 
-Composition control is a separate choice from production type and detail level. High-control performance, continuity, or product requirements do not automatically authorize detailed framing or camera choreography. Apply the composition-choice rules below at every detail level.
+[简述全片统一的视觉媒介、渲染质感与整体表演方向；第一部分已锁定的环境、材质特征和光照无需重复。具体动作反差、情绪变化和局部形变在对应镜头展开。]
 
-The minimum prompt skeleton is: per-image authority, overall visual and continuity requirements, shot or narrative-beat numbering, main action and emotion, synchronized sound, and a compact timeline. Include composition and camera details only within the user's chosen scope.
+无BGM、无背景音乐，只有音效。音效丰富、搞怪，由环境声、动作拟音、非旋律性效果声和角色无词反应组成，基本覆盖动作与表情细节，轻重、远近分明，与画面同步。
 
-## Confirm who designs the composition
+三、分镜提示词
 
-- Apply the visibility rule to lighting and global scene prose too. When a window, lamp, doorway, or other light source is outside the frame, describe only its visible result on the subject (soft facial shading, hair highlights, brightness, color), not the unseen source or phrases such as “窗侧光” or “窗外光洒入” that can relocate the subject. Preserve the reference-defined subject location; a global lighting sentence must not imply new staging. State necessary location continuity globally without requiring its surroundings to appear in a close-up, and audit both global and per-shot lighting for this conflict.
-- Before describing a shot, check what its camera can actually see, including subject occlusion. Mention only visible subjects and major environmental masses that shape the overall composition; do not assign screen positions to every prop. Objects known to exist in the scene but hidden behind the character do not belong in that shot's visual description. Convey an occluded action through its visible effects (such as posture or arm movement) and appropriate sound, rather than inventing visibility. This visibility-and-relevance check takes precedence over adding depth layers or directional labels.
-- Depth layers are optional, not a checklist: a composition may have no foreground. Do not invent chair backs, shoulders, branches, or other obstructions merely to populate a layer. Shot size is determined by subject coverage, not by the presence of a foreground; check that a push-in does not inadvertently tighten beyond the requested framing. Across adjacent shots, preserve deliberate differences in subject coverage, angle, and narrative focus rather than repeating similarly tight framing.
-- When authored composition is requested, combine depth layers (前景、中景、后景) with useful screen positions (上方、中央、下方、左侧、右侧、左下、右下等) to place the subject, supporting action, and background explicitly. Use the positions that clarify that shot rather than filling every region mechanically. Anchor them to the current camera view, including low-angle or overhead views. Preserve the user's subject and camera angle when adding secondary actions; for example, do not replace a requested low-angle facial close-up with a downward-following insert of a falling prop.
-- Scope photographic preferences to the script or project for which the user gives them. A request for large apertures, shallow depth of field, or another visual treatment in one script does not establish a default for other projects. Keep that art direction in the current prompt or project context; only generalize it when the user explicitly requests a broader default.
-- When the user supplies no composition or storyboard framing for the current clip, ask before drafting: “这段需要我描写每个分镜的构图，还是交给 Seedance 自行生成分镜构图？” Do not silently choose. Reuse an explicit choice that already covers the current clip or conversation; do not ask again unnecessarily.
-- When the user supplies approximate composition, preserve that scope without filling in unrequested exact positions, frame proportions, foreground/background arrangements, lens choices, depth of field, or camera paths. Ask only about a material ambiguity.
-- When the user delegates composition to Seedance, state that Seedance designs the shot division and composition. Focus the prompt on characters, events, action causality, emotion, continuity, total duration, and synchronized sound. Preserve only user-required camera moves, shot boundaries, or reference keyframes; leave other framing, camera choices, cuts, and shot lengths open. Number narrative beats when helpful, clearly labeling them as story order rather than mandatory cuts, and use an approximate beat timeline instead of inventing a rigid shot schedule.
-- When the user requests authored composition, specify framing and camera behavior to the requested level. Broad approval does not require exhaustive camera detail.
-- A background script's shot size or camera suggestion does not automatically authorize additional detailed composition. Follow the user's current single-shot description; ask about relevant conflicts with the script. Asset sheets establish appearance or spatial facts, not mandatory video framing, unless the user assigns that authority.
+【0—X秒｜镜头一｜简短动作标题】
 
-## Allocate detail by shot duration
+[广角／大广角／超广角等透视选择，荷兰角、仰拍、俯拍等机位角度。前景：……；中景：……；后景：……。写明可见主体的位置、大小、遮挡关系及起始状态，按实际可见层次填写。]
 
-Allocate each shot's prompt length roughly in proportion to its screen time, adjusted for the user's chosen control level and the shot's narrative importance. Short shots get compact instructions; longer shots get more room for action progression, acting, physical feedback, and timing. Treat this as a user-reported production heuristic, not a verified claim about Seedance's internal attention mechanism.
+[本拍的主要动作、具体搞怪细节及可见的触发与反馈；表情如何承接并转变，强烈情绪用简短有力的形容、直观比喻或具体形变写足幅度。写清人物／道具运动，以及摄影机的主运动、触发变化与必要的同时运动；交代前、中、后景如何遮挡或揭示信息、关键接触如何看清，最后落到明确的结果状态与镜头衔接。关键变化。]
 
-- For a short arrival, transition, or hold, state essential action, end state, continuity, and synchronized sound concisely; include composition and camera only within the chosen scope.
-- For a longer or primary shot, spend the detail budget on the intended performance and motion progression. Do not pad static holds merely to match a word-count ratio.
-- Keep critical constraints explicit even in a very short shot, especially impact timing, precise camera moves, reference-image authority, and required final poses.
-- In brief shots built around one key action, keep the setup minimal and concentrate detail on that action. Omit optional weaker versions, intermediate pose grades, or secondary beats that compete with the intended result; describe a continuous transition into the key action without inventing a ladder of small changes. Preserve intermediate states only when the user explicitly needs them.
-- Put shared appearance, weather, and material continuity in global sections; repeat within shots only where the action changes them or a critical visual cue requires reinforcement.
-- Check the relative length of shot sections before delivery: a brief supporting shot should not receive the same exhaustive treatment as a longer main shot without a specific reason.
-- When shortening a clip, re-edit the shot plan rather than merely shrinking every time range. Merge redundant reactions, enter actions already underway, and use motivated cuts for elapsed time. Preserve user-required beats, intelligible dialogue, object interactions, and a readable ending. Do not equate cinematic quality with long holds or slow motion; estimate duration from the actual action load, and label an unspecified total as a proposal rather than carrying over the previous clip's duration.
+声音：[按动作顺序写本镜头的同步音效，覆盖主要动作与细节反应，写清对应触发、音色及轻重变化，体现搞怪感。]
 
-## Viewpoint, compositing, and transitions
+【X—Y秒｜镜头二｜简短动作标题】
 
-- Distinguish the filming viewpoint from any in-scene device's viewpoint. Resolve each POV's physical origin, height, direction, and framing internally before writing. Only when the user or references establish a device as fixed should its installation point remain continuous across cuts and split screens, unless relocation is explicitly part of the action. Moving or handheld devices follow their established movement. Keep exact installation locations and heights in the current project prompt, not this skill.
-- When a fixed device's placement is unclear in a shot, use visible mounting details or a few relevant spatial landmarks only if they fit the requested framing and clarify the ambiguity. Do not require a mounting connection in every shot or add unseen surroundings to prove placement. Distinguish filming-camera movement, device movement, and movement of its individual parts according to the established structure.
-- A lens POV excludes that same camera's body, lens housing, support, and operator unless physically visible for a specific requested reason. Other devices or people may appear when actually visible from that POV. Viewfinder UI is an independently authorized overlay, not evidence that the camera body should be shown.
-- Scope explicitly requested UI/effect exceptions to the specified shots and visual form; do not extend them to other shots or unrelated graphics. Reconcile global exclusions with local exceptions instead of leaving contradictory instructions. Distinguish physical in-scene text from subtitle overlays. Keep project-specific compositing colors, app names, and effect designs in the project's prompt, not this reusable skill.
-- Separate editorial notes from generated action. Do not generate dissolves, flashback effects, or other transitions supplied only as editing notes. When a transition is explicitly requested, define its visible outgoing state, trigger, incoming state, and useful matching anchor; avoid unintended character morphing or instant tree growth. Keep offscreen light sources out of transition prose too.
+[沿用相同的段落格式，写明本镜头的前景、中景、后景构图及具体动作反差，让运镜配合意外出现的时机，并根据剧情改变景别、视角、构图与运镜。按实际镜头数量增减。]
 
-## Build the prompt
+声音：[本镜头的具体同步音效，按同样方式紧贴动作与细节。]
 
-1. Read the images in the user's supplied order and call them 图1、图2、图3…… unless the user assigns other labels.
-2. Define the exact purpose of every image: shot start, shot end, intermediate state, composition, pose, expression, environment, prop, or lighting reference.
-   - Build an explicit authority map for each image. A reference may control the full frame, or only one attribute such as expression, pose, prop state, impact moment, lighting, or environment.
-   - Do not automatically treat every intermediate reference as a composition target or mandatory frame. When multiple references share a similar shot but differ in small ways, preserve continuous motion from the established camera instead of letting the prompt jump between reference frames.
-   - If the user's intended authority for an image is materially ambiguous, ask which attributes it should control before drafting. Do not guess composition authority.
-3. Reconcile total duration with all specified shot durations. Allocate enough time for setup, action, reaction, and end-state hold; never leave contradictory totals. When Seedance controls shot division, keep the total duration and necessary action timing, but do not invent fixed shot durations.
-4. For user-specified or requested authored shots, write explicit sections: 镜头1、镜头2…… Restart numbering for each standalone generation. When shot division is delegated to Seedance, use numbered narrative beats instead, without imposing a cut at each beat.
-5. Describe actions as a causal sequence with readable timing: stimulus → gaze or body response → action → physical feedback → emotional reaction. State whether an action is fast, abrupt, gradual, delayed, forceful, or weak.
-6. Apply the composition choice before writing camera instructions. Where the user requests camera control, describe the relevant framing, path, speed, stopping behavior, and transitions at the requested level; otherwise leave these choices to Seedance.
-7. Preserve continuity across images and shots: identity, face, hair, costume damage or dirt, wetness, props, handedness, pose, screen direction, spatial layout, weather, and lighting.
-8. Give each specified shot (or narrative beat when shot division is delegated) its own synchronized sound description. Unless the user explicitly requests an exception for the current clip, write the literal constraint “全片无BGM、无字幕、无UI。” in the prompt; merely omitting these elements is insufficient. Handle each category independently: an explicit request for music does not authorize subtitles or UI, and spoken dialogue does not authorize subtitles. Preserve only the expressly requested exceptions and explicitly exclude the remaining categories. A background script's music, subtitle, or UI suggestions do not by themselves establish user intent; follow the current request and ask about a material ambiguity. Default delivery also excludes dialogue bubbles. Retain appropriate diegetic ambience, action sounds, requested dialogue, vocal reactions, and object feedback. A phone lighting up is silent unless the user requests a sound.
-9. End with a compact timeline table covering only useful items such as time range, action/camera, emotion/light/sound.
+四、连续性限制
 
-## Performance and physics
+[仅用简短正向句补充必要的跨镜衔接与状态延续条件；已在前三部分交代清楚的内容无需重复，不为凑满这一部分新增约束。]
 
-- Describe environment positions directly from the current shot's viewpoint. For a camera POV, state only the visible landmarks and useful positions, such as “右侧是前院大树，左侧是混凝土车道，远处是街道和对街房屋”. Resolve reverse-angle geometry internally; do not narrate how positions convert from an opposite viewpoint or repeat a spatial walkthrough unless the user asks for that explanation. Retain only landmarks needed for the composition, action, or camera move.
-- Translate emotion into controllable facial and bodily detail: brows, eyelids, pupils, gaze target, mouth corners, lips, jaw, breathing, shoulders, hands, center of gravity, and pauses.
-- Keep reactions ordered. The character first sees the stimulus, then the face changes; do not make the emotional result appear before the cause.
-- Describe object motion with direction, speed, force, collision, rebound, deformation, and settling when relevant. If impact is important, prefer a direct trajectory over optional drifting that weakens it.
-- When framing makes the direction clear, anchor important motion or gaze to screen coordinates (such as “画面左下”) to clarify body-relative or travel-relative wording. Either coordinate system can work; combine them only when consistent. Distinguish screen-left from the character's left, and reassess screen directions after camera movement or a cut.
-- Background people should have staggered, varied body actions and facial micro-actions rather than synchronized crowd behavior. Avoid a row of uniformly wide eyes and open mouths or mechanical head turns. Give selected people different smile progressions, mouth-corner movement, brief blinks, gaze tracking, and expression settling; keep some reactions quiet so the crowd remains natural at the requested scale.
-- In crowded reference scenes, bind important reactions to stable visual identities built from screen side, front-to-back order, and one or two visible traits such as clothing color, age, hair, or held prop. Reuse the same compact label throughout the prompt and timeline. Prefer “左排第1位棕色夹克男宾客” over shifting relational phrases such as “旁边的人”; do not invent a trait that is not visibly supported, and do not overload one label with every available detail.
-- When several phones or cameras must register as distinct photo events, assign each event to a visible device and give it a readable staggered cadence within the shot. Synchronize finger press, device response, shutter sound, and any authorized flash; do not rely on a generic sentence about multiple photographers. Distinguish still-photo events from continuous phone recording, and avoid flashes on every device unless requested.
-- In moving-camera shots, distinguish world-anchored foreground objects from camera-mounted elements. Specify depth-driven parallax and frame exit when the camera passes stationary people or props. For changing light patches or glare, tie visible motion to foliage, occlusion, or viewpoint changes rather than treating the effect as a screen-fixed overlay or inventing an independently moving light source.
-- In stylized rain scenes, explicitly call visible droplets “白色水滴” when contrast is necessary. Keep droplets forming, sliding, gathering, falling, and reforming on hair, skin, clothes, hands, and bare feet even when the character pauses.
+## 买量镜头与构图规则
 
-## Revision rules
+### 1. 买量定位与节奏
 
-- Before revising, consolidate all still-active user corrections, not only the newest message. Preserve accepted staging, casting, scene, sound, format, and scope; distinguish the current revision from a new clip. Normalize obvious voice-transcription errors and stray numbering using context, but ask about a material unresolved ambiguity rather than inventing a major action or spatial reversal.
-- When the user supplies an explicit storyboard, preserve its viewpoints, compositions, internal cuts, action order, and casting/driver roles; refine execution rather than substitute a different shot plan. Keep camera translation, camera pan, subject movement, and background drift distinct. Ask about an unresolved directional conflict before fixing screen direction, instead of silently reversing vehicle travel or moving an installed camera.
-- For this user's authored storyboard format, include each shot's number, time range, duration, and concise photographic parameters in the prompt body, not only in the external timeline. Treat focal length, aperture, frame rate, and shutter as visual guidance, not verified generation controls. Scope parameter detail to the requested format and keep durations consistent with the total.
-- Default to editing only the affected shot content for local action, expression, pacing, or camera revisions. Preserve reference definitions and global appearance, style, continuity, emotion, and sound sections unless the change actually affects them. Update linked shot sound or timeline entries only when needed for consistency, and explain any necessary cross-section change briefly. A request for a full copy changes delivery scope, not permission to rewrite unaffected text.
-- Apply the user's latest instruction directly. Remove superseded actions and wording instead of adding phrases such as “不要旧动作、改做新动作”.
-- For a genuinely small isolated revision delivered as a patch, provide an exact, searchable original excerpt and its revised counterpart. Copy originals verbatim from the latest available text, without ellipses or paraphrase. This patch format does not apply to full-version delivery.
-- If several shots or linked reference/global/timing sections change, automatically return one clean complete prompt rather than many replacement fragments. Also return the full prompt whenever requested. Full delivery preserves unaffected text and incorporates all active corrections; it does not authorize redesigning approved shots.
-- When the user asks only for a timeline, return only the timeline. Do not redeliver or rewrite the prompt unless requested.
-- When a generated result is supplied, distinguish visible failures from inferred prompt causes. Inspect framing, direction, mounting, product shape, and subject placement, then repair both local and global phrases that could recreate the failure. Do not claim a prompt revision guarantees generation accuracy.
-- Do not preserve obsolete plot beats merely because they appeared in an earlier draft.
-- Check for duplicated words, mojibake, contradictory positives and negatives, wrong shot numbering, missing image roles, and duration errors before delivery.
+明确这是 MLBB 买量视频。快速进入脚本的有效动作、冲突或情绪节点，让观众尽快看懂本段的目标或处境。按用户给定的事件顺序组织预期、动作、意外后果与反应，不为套结构增加前置剧情。每一拍有一个主要关注点，前后景仍可并行表演；景别、角度与运动随信息变化，保持紧凑节奏。
 
-## Continuous improvement
+### 2. 静止镜头限制
 
-Apply continuous improvement across projects, not only within the project where this skill was created. During an active prompt-writing or revision turn, when the user gives feedback that demonstrates a genuinely reusable method, separate it from story-specific direction and add the reusable rule to this skill without requiring a separate reminder. This is an in-turn maintenance workflow, not background learning or silent work after the conversation ends.
+静止镜头连续时长必须短于 2 秒，不能出现持续 2 秒及以上的静止停留。人物自身的动作不能代替摄影机运动；主体保持在画面中心时，摄影机仍可持续推进、侧移或跟随。动态镜头可以超过 2 秒，较长镜头内部随动作和情绪节点改变运动、景别、角度或构图。需要短暂停顿或升格时写明区间，关键动作保持清楚，升格期间摄影机继续运动。
 
-Reusable guidance includes output structure, continuity handling, timing discipline, attention allocation, camera-language precision, screen-space direction, expression causality, object physics, or revision behavior. Keep one-off character actions, client notes, plot facts, exact durations, named characters, and project-only art direction in the current prompt rather than turning them into global rules. Do not update the skill merely because a user requests a different creative choice once; prefer feedback that states a general principle or demonstrates a repeated failure pattern.
+### 3. 非常规且频繁变化的运镜
 
-Skill maintenance is conditional on authorization and writable access. If the user has authorized ongoing maintenance, update the canonical shareable source when it can be identified, keep the installed copy aligned, run the standard validator on both, and synchronize the authorized Git remote. If the canonical source or push authorization is unavailable, update only the writable authorized copy and report what remains unsynchronized. Never let maintenance delay delivery of the requested prompt unnecessarily.
+运镜必须符合脚本的动作方向、信息揭示顺序与情绪变化，并保持非常规、频繁变化的镜头设计。一个动作段先明确主运动，在观察、动作转折、反应或新信息出现时接猛推、急撤、横移换向、滚转等变化；让这一拍的动作和结果先被看清，再进入下一拍。
 
-## Output format
+主运动写清起点、方向、速度与落点，变化写清触发动作。复合运镜明确哪些运动同时持续，例如“环绕继续，同时猛推”。分别交代人物、道具和摄影机的运动：人物走近造成的放大、走位形成的遮挡，以及物体飞向镜头，都不能仅用摄影机推拉替代描述。
 
-For this user's authored prompts, default to the latest confirmed numbered storyboard format below. Use “切到……” inside shot prose where useful, not as a substitute for shot numbers, timing, parameters, composition, and sound. Use compact continuous narrative or delegated shot design only when the user requests it. Estimate duration from action completion, natural dialogue delivery, reactions, and product demonstration; present an inferred duration as an editorial recommendation, not a guarantee of model output.
+### 4. 非常规构图与广角透视
 
-Put the complete prompt in one plain-text code block for easy copying. Separate major sections with one blank line. Use this order when applicable:
-Within each shot, use consecutive lines without blank lines between photographic parameters, composition, action, and sound. Keep one blank line between shots; do not pad internal shot formatting.
+每个分镜都必须采用非常规构图。优先使用广角、大广角和超广角，结合荷兰角、贴地仰拍、陡峭俯拍、强烈近大远小、主体偏置或对角线布局等方式，制造冲击、压迫、悬念、惊喜或反差。按该镜头的情绪目标组合手法，保持角色与关键动作清楚可辨。
 
-```text
-参考图定义：
-图1……
+### 5. 用前景、中景、后景固定构图关系
 
-全片质感与连续性：
-……
+构图优先按“前景……；中景……；后景……”写清实际可见的人物或物体、画面位置、相对大小与遮挡关系。主体可在任一层，不存在的层次可省略。给各层分配信息：哪一层是主要动作，哪一层保留威胁、他人反应或观众先知道的异常。
 
-声音总则：
-……
+交代观众先看见什么、角色何时察觉，以及摄影机或人物走位何时揭示全貌。前景可以由角色走近、探身或道具入画形成。写清起始布局及运动后的构图目标，包括入画、出画、遮挡解除与透视变化；保留主要表情和关键接触的可见空间。
 
-镜头1｜0—X秒｜时长X秒：
-拍摄参数：……
-视角与构图：
-……
-动作与运镜：
-……
-同步声音：
-……
+### 6. 关键过程与结果可读
 
-镜头2｜X—Y秒｜时长Z秒：
-……
-```
+对影响因果理解的道具或接触，写清必要的来源、运动、接触与结果，用短特写或同框关系让观众看见变化。已建立的事实直接承接，避免重复补取物、准备或同一次撞击。运动模糊优先留给背景和快速运动边缘，关键表情、接触点与分离过程保持清楚。
 
-When shot division is delegated to Seedance, replace the shot headings with numbered narrative-beat and sound headings, and state that these beats do not prescribe cuts or composition.
+跨镜头承接人物姿态、情绪进度、道具数量与位置；动作留下的破损、散落或形变按当前剧情延续。结尾交付明确可读的结果状态，保留需要的余动，时间线给关键过程、反应和收尾留出时间。
 
-After the code block, add `简易时间线：` and a concise Markdown table. Do not bury the timeline inside the long prompt. Use approximate narrative-beat timing when Seedance controls shot division.
+### 7. 用词与预期强度一致
+
+核对动作幅度与速度、表情程度、镜头倾斜与运动距离、形变及音效力度。明显需要大幅、猛烈或快速的地方，直接写清对应程度和可见结果，避免习惯性加入“轻微、稍微、一点、缓缓”等词削弱指令；同一动作阶段的程度描述保持一致。确实需要细小反应、弱音或节奏反差时再使用弱程度词，按画面意图选择，不把所有表现统一放大。
+
+## 搞怪动作、夸张表情与意外感
+
+角色动作以奇怪、搞怪、反常规和出人意料为明确表演方向。在脚本留有空间的地方，主动设计观众不容易预判的行为选择、身体反应与表情反差。保留用户指定的角色身份、关键动作和剧情结果，将创意落实在动作的做法、节拍、转折与反馈上。
+
+把“搞怪”写成可见过程：先看到或意识到什么，原来的表情如何短暂残留，眉眼、嘴角、肩背和手脚如何转变，重心在哪一刻改道或失控。多人动作写清谁先动、另一方如何回应，以及结果怎样触发下一拍；意外也可来自威胁与行为不相称。
+
+强烈情绪节点主动采用抽象、荒诞、超出正常生理比例的夸张表情，用简短有力的形容词、直观比喻或直接的形变描述，把脸上发生的变化写具体。例如“脸肿得像充满气的气球，眼睛挤成两条缝”“哭得嘴巴张开比整张脸还大，眼泪像两股喷泉往外喷”“惊得下巴垂到胸口，双眼瞪成两颗乒乓球”“脸被拍成一张薄饼，松开后猛地弹回”。比喻用于说明形状与尺度，按情绪选择最有效的一两处夸张，不逐项堆满。
+
+参考中的发型、服装、配色等身份特征和材质基准保持一致，五官与脸部的临时形变按剧情明确指定；写实材质也可以承载荒诞的大幅表情。将真实发生的弹性挤压、拉伸、鼓胀或变色与广角透视区分开，简洁交代触发、变化及下一拍的状态，和身体反应、运镜及音效同步。具体形变写在对应镜头内。
+
+### 动作选用方向
+
+- **蓄势与结果反差：**摆出极其隆重的起手式，观众以为要发生大动作，最后却只完成一个小得出奇的动作。
+- **脸和身体唱反调：**脸还在逞强、装镇定，手已经慌乱，脚已悄悄后退；下一拍表情才暴露真实情绪。
+- **突然改变动作路线：**看似要直冲，临近目标突然侧滑、绕行或缩身钻过空隙；写清触发改道的原因与落点。
+- **失控后强装无事：**急停造成几步碎步、身体回弹或姿态失衡，角色马上摆回体面姿势，眼神却先确认有没有人看到。
+- **刺激与反应不成比例：**小触发引出逐步升级的连锁后果，或巨大动静面前角色仍专注一件小事；交代每次反差的触发与可见结果。
+- **已有道具的意外用法：**以过分郑重、笨拙或意想不到的方式操作已有道具，让道具用法本身构成笑点。
+- **节拍突然改变：**快速连做几下后短促卡住，再突然爆发；或身体先做出行动，意识和表情慢半拍才跟上。
+- **不同角色反应错拍：**一个角色过度用力，另一个反应淡定或来不及配合，由不同的反应时机产生意外结果。
+
+根据动作时长选最有效的反差，给观众看清意外和反应的时间。让运镜配合笑点：先建立观众的预期，再在动作转折处改变景别、视角或揭示范围。需要的喜剧停顿仍遵守静止镜头短于 2 秒的要求。
+
+## 运镜与构图选用库
+
+主动从下列方向扩展镜头设计，也可提出符合脚本的新组合。每个动作段选择一个主要视觉创意，再随剧情安排运动变化；按时长与信息量控制组合数量。将选中的手法写成具体画面、路径与节拍。
+
+涉及道具、反射面、遮挡物或缝隙的手法，使用当前素材和脚本已经建立的对象与空间。每种构图都要落到实际的前景、中景、后景关系，明确观众先看到什么、随后发现什么。
+
+### 运镜方向
+
+| 手法 | 具体运动与适用效果 |
+| --- | --- |
+| 越过角色后回看 | 从角色侧后方快速超越，经过身侧后转向面对角色；从追赶感突然变成直面角色的窘态或威胁。 |
+| 贴地冲近后突然拔高 | 沿地面逼近脚步或动作落点，再快速升高俯看；先夸大气势，再揭示真实规模或荒唐处境。 |
+| 猛推后沿斜线猛拉 | 先冲近表情或动作细节，在反转点沿侧后方拉开；用新的纵深与视野暴露此前看不到的信息。 |
+| 穿过前景空隙后转向 | 从已有物体之间的真实空隙掠过，随后转向新的动作主体；用近处擦过的边缘制造速度与发现感。 |
+| 跟随道具移动 | 摄影机与运动道具保持相对位置，目标在后景接近。可从人物观察转入道具随行，再交付接触或结果；明确切镜点或连续交接路径，以及道具与目标的位置关系。 |
+| 与角色保持固定相对视角 | 摄影机随角色急跑或急转，脸在画面中的位置相对稳定，背景剧烈变化；突出慌张、眩晕或一本正经的荒诞感。 |
+| 环绕中突然换向 | 环绕建立气势，在动作反转处改变绕行方向或突然收近；把角色失去主动权的瞬间拍出来。 |
+| 角色急停，摄影机继续滑过 | 跟拍时角色突然停下，摄影机沿原路径短暂越过，再快速回看；揭示角色怂住、犹豫或被落下的反应。 |
+| 后退并收窄视角 | 摄影机后退，同时收窄视角，使主体画面大小近似不变、后景尺度和纵深明显变化；强调震惊或处境骤变。 |
+| 沿身体动作迅速抬镜 | 从近处脚步、手势或道具起，沿动作方向迅速抬升或摇向脸；让动作的荒唐结果落在表情上。 |
+| 倾斜推进后突然扶正 | 推近时逐渐滚转成倾斜画面，在转折点快速回正；也可从倒置视角进入，再随动作旋正。写清旋转过程与落点。 |
+| 贴着前景横移揭示 | 让近处已有物体短暂遮住一部分信息，沿其边缘快速横移，露出后方意外动作；通过视差控制笑点出现的时机。 |
+| 角色主观视点 | 明确摄影机代表谁的视线、高度与朝向，用前景可见的手、脚或道具建立参与感；镜头随观察、避让或受冲击的动作变化，写清对象相对摄影机的来向与去向。 |
+
+### 构图方向
+
+| 手法 | 前景、中景、后景的组织方式 |
+| --- | --- |
+| 极近前景与远处小主体 | 前景用贴近镜头的手、鞋尖或道具边缘形成巨大尺度，中后景保留较小的角色或目标；利用透视制造压迫或反差。 |
+| 贴地仰拍与强烈纵深 | 前景地面、脚步或低处障碍放大，中景承载主动作，后景向上延伸；强化逼近、滑行或夸张起势。 |
+| 垂直俯拍与图案化行动 | 从上方把角色、道具和行动路线组织成清楚的形状或关系，让本来激烈的动作显得小巧、笨拙或出乎意料；不强凑不存在的前景。 |
+| 极端偏置与大块留空 | 主体挤在画面一角，将另一侧的大块空间留给即将闯入的对象或事件；用留空建立期待。 |
+| 从缝隙或肢体间看过去 | 以前景已有的门框、臂弯或双腿形成画中框，中景放置主要动作，后景补充处境；形成偷看、受困或奇特观察角度。 |
+| 对角线上的力量对抗 | 把近处和远处主体放在相对的画角，让视线、动作方向和环境线条沿斜线冲突；可配合荷兰角放大失衡。 |
+| 前面严肃，后面出状况 | 前中景维持主表演，后景先出现角色尚未察觉的异常；明确观众何时看见、角色何时发现，再用反应兑现信息差。 |
+| 头顶压迫与下方局促 | 已有大物体或靠近镜头的身体局部压住画面上方，中下方角色被挤在狭小空间；用位置和透视制造窘迫或威胁。 |
+| 反射与实景同时提供信息 | 前景或侧面放置已有反射面，中景保留真人或动作，在符合反射方向的位置呈现另一条信息；借观看范围的差异揭示意外。 |
+| 极近局部与侧后方动作并置 | 将脸、眼睛或手部局部贴近一侧画缘，另一侧留出中后景的关键动作；把微表情与事件放在同一构图中形成反差。 |
+
+将“搞怪动作 + 非常规构图 + 运镜变化”围绕同一个动作转折来组织。例如角色的脸保持凶狠而脚已后退时，可用极近前景夸大姿态，再沿斜线猛拉，把偷偷撤退的步法与真实处境一并揭示。
+
+## 音效规则
+
+提示词第二部分必须明确写出“无BGM、无背景音乐，只有音效”。音轨由环境声、动作拟音、非旋律性的搞怪效果声与角色无词反应组成，不自动添加台词或旁白。
+
+各镜头按动作发生顺序写同步音效，基本覆盖可见动作、细微操作、表情转折、接触与反应。用轻重、远近、材质变化，以及短促的弹性、挤压、滑动等效果强化搞怪感；主要音效突出，细节音效衬托，喜剧停顿可短促收声。搞怪效果声由画面事件触发、保持非旋律，节奏靠动作与音效的疏密形成，不以音乐重音或持续节拍铺底。
+
+## 后续修改规则
+
+本 skill 同时处理初稿与后续反馈。修改以解决当前问题为目标，优先通过重写、替换与整合提高准确性。
+
+1. **以最新有效版本为准。**优先使用用户指定的版本，否则以当前正在修改的版本为基底，合并用户仍然有效的要求与已确认修改。新指令替代冲突的旧要求，保留未被此次修改涉及的已认可内容。
+2. **先定位再动笔。**找出相关句段中的错误表达、缺失信息或指令冲突，按问题检查动作顺序、视点方向、道具状态、运镜路径、措辞强度与时长负载。用户提供生成结果时，区分实际可见的问题与推测的提示词原因。
+3. **直接替换问题段落。**将期望的动作、空间关系、触发过程或结果写回原来对应的位置；必要时整段重写。同步清除被取代的动作、冲突旧句与重复强化语，交付稿只保留当前有效写法。
+4. **修改范围与影响一致。**局部反馈只修改相关段落，以及确实受影响的参考定义、整体要求、声音、连续性限制和时间线。跨段核对镜头数、时长、动作顺序与状态，消除版本残留；用户要求完整稿时，保留未受影响的内容。
+5. **收敛负面提示。**遵循下方正向写法，仅补充解决当前歧义必需的排除项；合并同义禁令，清除针对已取消内容的旧限制，保留用户仍有效的明确禁止项。
+6. **控制信息增量。**补足必要信息的同时，删除相关的赘述与冲突。保留关键动作、接触、方向和连续性条件，不以固定字数或必须更短为目标；形容词和比喻应明确形状、尺度或强度，不用空泛形容词堆叠、重复强调或无关细节代替具体修正。
+7. **交付干净的修订结果。**单点修改可给出可直接替换的完整段落；涉及多处联动，或用户要求完整版时，提供一份已整合的完整提示词。修改说明放在正文之外，简短交代解决了什么问题，不把修改过程、旧方案或补丁说明混入提示词。
+
+例如，修正“放下的盆又回到手里”时，应把放盆、松手、双手开始抓取的衔接写清楚，并替换后续仍写着“左臂抱盆”的句子；以统一后的动作与状态解决冲突。
+
+## 内容分工与排版
+
+正文按四部分顺序编排，各自负责对应内容，同一信息放在所属位置，不跨段重复铺陈。
+
+1. **角色与场景定义：**描述并锁定参考中的视觉特征。角色及关联对象写清发型发色、服装配色、比例、装饰、毛发、肢体、载具结构及骑乘等稳定组合关系；场景写清具体地点、道路或地面材质、周边物体、远景、天气光照与空间层次。按实际素材选择影响识别和稳定性的特征，简洁而具体，不能只用角色名或“保持标志性外观”替代。具体动作、表情变化和运镜仍在分镜展开。
+2. **画面与声音：**只写画幅、总时长、镜头数量、统一视觉风格、节奏与全片声音原则，明确无BGM、无背景音乐、只有音效。
+3. **分镜提示词：**按发生顺序写站位、姿态、持物方式、道具状态、动作、表情、构图、运镜及同步音效。开场状态在第一镜交代，后续镜头承接已有状态，让触发、变化和结果顺着发生。
+4. **连续性限制：**只补充确有必要的跨镜衔接与状态延续条件，用正向句说明如何保持；前文已交代清楚的定义、全片要求和动作链无需再写一遍。
+
+初稿和修改都以正向描述为主，写清应该发生什么。用户明确要求的禁止项保留；其他排除项仅在确有必要、正向描述仍难消除歧义时简短写入，不固定附加负面提示词清单。提示词以准确、够用为准，保留关键因果与执行信息，删除重复强调、无关修饰和冗余约束，减少对模型的干扰，不以篇幅长作为详细或有效的标准。
+
+- 正文使用连贯自然段和纯文本小标题；具体音效以“声音：”开头，在每个镜头末尾单独成段。
+- 分镜标题写成 `【起始秒—结束秒｜镜头一｜简短动作标题】`，镜头依次编号。
+- 输出给用户的提示词正文使用纯文本，保留“一、二、三、四”和带时间的镜头标题，不使用 Markdown 标题符号、加粗星号、列表标记、代码围栏或表格；简易时间线也用纯文本。
+
+## 一镜到底的格式调整
+
+- 第三部分改为 `三、连续镜头调度`。
+- 分段标题改为 `【0—X秒｜阶段一｜简短动作标题】`，阶段依次编号；时间段表示同一镜头内的阶段。
+- 每阶段仍按“起始画面 → 动作、表情与运镜 → 结束状态 → 声音”的段落顺序写。
+- 第二部分写明一镜到底，第四部分填写对应的连续性限制。
+- 一镜到底同样遵守买量节奏、非常规构图与静止段落短于 2 秒的要求；在连续运动中安排运镜变化和前、中、后景的构图变化。
+
+## 简易时间线
+
+完整正文之后附纯文本简易时间线；一镜到底时用“阶段”代替“镜头”。核对总时长、镜头数和正文时间范围一致；按动作、音效、反应与收尾的实际负载分配时间，短镜头只承载必要信息。
+
+简易时间线
+0—X秒 镜头一：[核心动作与意外点、构图与运镜变化]
+X—Y秒 镜头二：[核心动作与意外点、构图与运镜变化]
